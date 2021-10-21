@@ -11,6 +11,8 @@ import kotlinx.serialization.json.decodeFromStream
 import net.kyori.adventure.text.Component
 import net.minestom.server.MinecraftServer
 import net.minestom.server.attribute.Attribute
+import net.minestom.server.inventory.Inventory
+import net.minestom.server.inventory.InventoryType
 import net.minestom.server.item.Enchantment
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
@@ -32,6 +34,7 @@ class ItemService {
     private val watchService = FileSystems.getDefault().newWatchService()
     private val registeredKeys = ArrayList<WatchKey>()
     val items = emptyMap<String, ItemStack>().toMutableMap()
+    val pathToItems = emptyMap<Path, String>().toMutableMap()
 
 
     fun init() {
@@ -56,6 +59,7 @@ class ItemService {
                     encodeDefaults = false
                 }.decodeFromString<Item>(file.readText())
                 items[item.fileName] = transformItemToStack(item)
+                pathToItems[file] = item.fileName
                 return super.visitFile(file, attrs)
             }
         })
@@ -64,6 +68,11 @@ class ItemService {
 
     private fun buildItem(event: WatchEvent<*>, dirPath: Path) = runBlocking(Dispatchers.IO) {
         val eventPath = dirPath.resolve((event.context() as Path).toString().replace("~", "")).normalize()
+        if (event.kind() == ENTRY_DELETE) {
+            items.remove(pathToItems[eventPath])
+            return@runBlocking
+        }
+
         if (eventPath.toFile().isFile) {
             CoroutineScope(Dispatchers.Default).launch {
                 val item = try {
@@ -102,10 +111,10 @@ class ItemService {
                         item.fileName,
                         transformItemToStack(item)
                     )
+
                 } else {
                     items[item.fileName] = transformItemToStack(item)
                 }
-
             }
         }
 
