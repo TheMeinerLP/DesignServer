@@ -10,7 +10,7 @@
   ],
   "meta": {
     "customModelData": 1,
-    "damage": 200,
+    "damage": 0,
     "itemFlags": [
       "HIDE_ATTRIBUTES",
       "HIDE_UNBREAKABLE"
@@ -19,6 +19,16 @@
       {
         "enchantment": "minecraft:efficiency",
         "level": 255
+      }
+    ],
+    "attributes": [
+      {
+        "uuid": "2AD3F246-FEE1-4E67-B886-69FD380BB150",
+        "internalName": "justATest",
+        "attribute": "generic.armor",
+        "operation": "ADDITION",
+        "value": 10.0,
+        "slot": "HEAD"
       }
     ]
   }

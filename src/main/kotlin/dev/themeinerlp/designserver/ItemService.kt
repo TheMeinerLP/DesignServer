@@ -10,14 +10,18 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import net.kyori.adventure.text.Component
 import net.minestom.server.MinecraftServer
+import net.minestom.server.attribute.Attribute
 import net.minestom.server.item.Enchantment
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
+import net.minestom.server.item.attribute.ItemAttribute
 import java.io.IOException
 import java.lang.Exception
 import java.nio.file.*
 import java.nio.file.StandardWatchEventKinds.*
 import java.nio.file.attribute.BasicFileAttributes
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.io.path.inputStream
 import kotlin.io.path.readBytes
 import kotlin.io.path.readText
@@ -51,12 +55,7 @@ class ItemService {
                     explicitNulls = false
                     encodeDefaults = false
                 }.decodeFromString<Item>(file.readText())
-                items[item.fileName] = ItemStack
-                    .builder(Material.fromNamespaceId(item.material) ?: throw RuntimeException("Material not found"))
-                    .amount(item.amount)
-                    .displayName(Component.text(item.name))
-                    .lore(item.lore.map { Component.text(it) })
-                    .build()
+                items[item.fileName] = transformItemToStack(item)
                 return super.visitFile(file, attrs)
             }
         })
@@ -98,40 +97,15 @@ class ItemService {
                     }
                     item
                 }
-                val itemBuilder = ItemStack.builder(
-                    Material.fromNamespaceId(item.material) ?: throw RuntimeException("Material not found")
-                )
-                itemBuilder.amount(item.amount)
-                itemBuilder.displayName(Component.text(item.name))
-                itemBuilder.lore(item.lore.map { Component.text(it) })
-                if (item.meta != null) {
-                    itemBuilder.meta { meta ->
-                        if (item.meta?.customModelData != null) {
-                            meta.customModelData(
-                                item.meta?.customModelData ?: throw RuntimeException("customModelData not found")
-                            )
-                        }
-                        if (item.meta?.damage != null) {
-                            meta.damage(item.meta?.damage ?: throw RuntimeException("damage not found"))
-                        }
-                        if (item.meta?.itemFlags != null) {
-                            meta.hideFlag(
-                                *item.meta?.itemFlags?.toTypedArray() ?: throw RuntimeException("itemFlags not found")
-                            )
-                        }
-                        if (item.meta?.enchantments != null) {
-                            meta.enchantments(
-                                item.meta?.enchantments?.associate { Enchantment.fromNamespaceId(it.enchantment) to it.level }
-                                    ?: throw RuntimeException("enchantments not found")
-                            )
-                        }
-                        meta
-                    }
+                if (items.containsKey(item.fileName)) {
+                    items.replace(
+                        item.fileName,
+                        transformItemToStack(item)
+                    )
+                } else {
+                    items[item.fileName] = transformItemToStack(item)
                 }
-                items.replace(
-                    item.fileName,
-                    itemBuilder.build()
-                )
+
             }
         }
 
@@ -152,6 +126,55 @@ class ItemService {
             }
         }
 
+    }
+
+    private fun transformItemToStack(item: Item): ItemStack {
+        val itemBuilder = ItemStack.builder(
+            Material.fromNamespaceId(item.material) ?: throw RuntimeException("Material not found")
+        )
+        itemBuilder.amount(item.amount)
+        itemBuilder.displayName(Component.text(item.name))
+        itemBuilder.lore(item.lore.map { Component.text(it) })
+        if (item.meta != null) {
+            itemBuilder.meta { meta ->
+                if (item.meta?.customModelData != null) {
+                    meta.customModelData(
+                        item.meta?.customModelData ?: throw RuntimeException("customModelData not found")
+                    )
+                }
+                if (item.meta?.damage != null) {
+                    meta.damage(item.meta?.damage ?: throw RuntimeException("damage not found"))
+                }
+                if (item.meta?.itemFlags != null) {
+                    meta.hideFlag(
+                        *item.meta?.itemFlags?.toTypedArray() ?: throw RuntimeException("itemFlags not found")
+                    )
+                }
+                if (item.meta?.enchantments != null) {
+                    meta.enchantments(
+                        item.meta?.enchantments?.associate { Enchantment.fromNamespaceId(it.enchantment) to it.level }
+                            ?: throw RuntimeException("enchantments not found")
+                    )
+                }
+                if (item.meta?.attributes != null) {
+                    meta.attributes(
+                        item.meta?.attributes?.map {
+                            ItemAttribute(
+                                UUID.fromString(it.uuid),
+                                it.internalName,
+                                Attribute.fromKey(it.attribute)
+                                    ?: throw RuntimeException("attribute not found"),
+                                it.operation,
+                                it.value,
+                                it.slot
+                            )
+                        } ?: throw RuntimeException("attributes not found")
+                    )
+                }
+                meta
+            }
+        }
+        return itemBuilder.build()
     }
 
 }

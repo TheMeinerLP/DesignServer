@@ -8,5 +8,6 @@ data class ItemMeta(
     val customModelData: Int?,
     val damage: Int?,
     val itemFlags: List<ItemHideFlag>?,
-    val enchantments: List<ItemEnchantment>?
+    val enchantments: List<ItemEnchantment>?,
+    val attributes: List<JsonItemAttribute>?
 )
