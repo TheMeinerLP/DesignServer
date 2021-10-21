@@ -9,7 +9,17 @@
     "§9Das ist eine tolle Flasche von Steffen"
   ],
   "meta": {
-    "customModelData": 3,
-    "damage": 500
+    "customModelData": 1,
+    "damage": 200,
+    "itemFlags": [
+      "HIDE_ATTRIBUTES",
+      "HIDE_UNBREAKABLE"
+    ],
+    "enchantments": [
+      {
+        "enchantment": "minecraft:efficiency",
+        "level": 255
+      }
+    ]
   }
 }

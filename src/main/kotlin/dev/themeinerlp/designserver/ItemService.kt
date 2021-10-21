@@ -10,6 +10,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import net.kyori.adventure.text.Component
 import net.minestom.server.MinecraftServer
+import net.minestom.server.item.Enchantment
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
 import java.io.IOException
@@ -83,28 +84,46 @@ class ItemService {
                         "minecraft:stone"
                     )
                     MinecraftServer.getConnectionManager().onlinePlayers.forEach { player ->
-                        player.inventory.addItemStack(ItemStack
-                            .builder(
-                                Material.fromNamespaceId(item.material) ?: throw RuntimeException("Material not found")
-                            )
-                            .amount(item.amount)
-                            .displayName(Component.text(item.name))
-                            .lore(item.lore.map { Component.text(it) })
-                            .build())
+                        player.inventory.addItemStack(
+                            ItemStack
+                                .builder(
+                                    Material.fromNamespaceId(item.material)
+                                        ?: throw RuntimeException("Material not found")
+                                )
+                                .amount(item.amount)
+                                .displayName(Component.text(item.name))
+                                .lore(item.lore.map { Component.text(it) })
+                                .build()
+                        )
                     }
                     item
                 }
-                val itemBuilder = ItemStack.builder(Material.fromNamespaceId(item.material) ?: throw RuntimeException("Material not found"))
+                val itemBuilder = ItemStack.builder(
+                    Material.fromNamespaceId(item.material) ?: throw RuntimeException("Material not found")
+                )
                 itemBuilder.amount(item.amount)
                 itemBuilder.displayName(Component.text(item.name))
                 itemBuilder.lore(item.lore.map { Component.text(it) })
-                if (item.meta != null ) {
+                if (item.meta != null) {
                     itemBuilder.meta { meta ->
                         if (item.meta?.customModelData != null) {
-                            meta.customModelData(item.meta?.customModelData ?: throw RuntimeException("customModelData not found"))
+                            meta.customModelData(
+                                item.meta?.customModelData ?: throw RuntimeException("customModelData not found")
+                            )
                         }
                         if (item.meta?.damage != null) {
                             meta.damage(item.meta?.damage ?: throw RuntimeException("damage not found"))
+                        }
+                        if (item.meta?.itemFlags != null) {
+                            meta.hideFlag(
+                                *item.meta?.itemFlags?.toTypedArray() ?: throw RuntimeException("itemFlags not found")
+                            )
+                        }
+                        if (item.meta?.enchantments != null) {
+                            meta.enchantments(
+                                item.meta?.enchantments?.associate { Enchantment.fromNamespaceId(it.enchantment) to it.level }
+                                    ?: throw RuntimeException("enchantments not found")
+                            )
                         }
                         meta
                     }
