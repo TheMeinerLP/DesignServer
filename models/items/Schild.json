@@ -31,5 +31,12 @@
         "slot": "HEAD"
       }
     ]
-  }
+  },
+  "actions": [
+    {
+      "action": "LEFT_CLICK",
+      "sneaking": false,
+      "method": "clickMe"
+    }
+  ]
 }

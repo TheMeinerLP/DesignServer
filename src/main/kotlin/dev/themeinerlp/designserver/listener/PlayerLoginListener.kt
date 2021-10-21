@@ -12,5 +12,6 @@ class PlayerLoginListener(val instanceContainer: InstanceContainer) : Consumer<P
         it.setSpawningInstance(this.instanceContainer)
         player.respawnPoint = Pos(0.0, 42.0, 0.0)
         player.skin = PlayerSkin.fromUsername(player.username)
+
     }
 }
