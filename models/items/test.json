@@ -1,0 +1,12 @@
+{
+  "fileName": "SteffensItem",
+  "className": "SteffensItem",
+  "name": "SteffensItem",
+  "packageName": "dev.themeinerlp",
+  "amount": 112,
+  "material": "minecraft:sand",
+  "lore": [
+    "§6TEST",
+    "§9TEST"
+  ]
+}

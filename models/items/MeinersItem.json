@@ -1,0 +1,15 @@
+{
+  "fileName": "BottleOfDesign",
+  "className": "BottleOfDesign",
+  "name": "§9BottleOfDesign | 1/3 Gefüllt",
+  "packageName": "",
+  "amount": 1,
+  "material": "minecraft:stick",
+  "lore": [
+    "§9Das ist eine tolle Flasche von Steffen"
+  ],
+  "meta": {
+    "customModelData": 3,
+    "damage": 500
+  }
+}
