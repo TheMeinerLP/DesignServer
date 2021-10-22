@@ -23,7 +23,7 @@ class ItemsCommand(private val itemService: ItemService) : Command("items", "i")
             }
 
         }
-        setDefaultExecutor { sender, context ->
+        setDefaultExecutor { sender, _ ->
             if (sender.isPlayer) {
                 sender.sendMessage("Usage: /command <item>");
             }
