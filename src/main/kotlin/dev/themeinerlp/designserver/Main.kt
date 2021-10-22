@@ -5,10 +5,8 @@ import dev.themeinerlp.designserver.listener.ItemDropListener
 import dev.themeinerlp.designserver.listener.ItemPickupListener
 import dev.themeinerlp.designserver.listener.PlayerLoginListener
 import dev.themeinerlp.designserver.listener.ServerPingListener
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlinx.serialization.ExperimentalSerializationApi
 import net.minestom.server.MinecraftServer
 import net.minestom.server.event.item.ItemDropEvent
 import net.minestom.server.event.item.PickupItemEvent
@@ -19,7 +17,9 @@ import net.minestom.server.event.player.PlayerSkinInitEvent
 import net.minestom.server.event.server.ServerListPingEvent
 import java.util.function.Consumer
 
-fun main(args: Array<String>) = runBlocking {
+@ObsoleteCoroutinesApi
+@ExperimentalSerializationApi
+fun main() = runBlocking {
     val mc = MinecraftServer.init()
     val itemServer = ItemService()
     itemServer.init()

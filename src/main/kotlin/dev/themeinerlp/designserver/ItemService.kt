@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
@@ -28,6 +29,7 @@ import kotlin.io.path.inputStream
 import kotlin.io.path.readBytes
 import kotlin.io.path.readText
 
+@ExperimentalSerializationApi
 class ItemService {
 
     private val modelsPath = Paths.get("models", "items")

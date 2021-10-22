@@ -1,16 +1,18 @@
 package dev.themeinerlp.designserver.commands
 
 import dev.themeinerlp.designserver.ItemService
+import kotlinx.serialization.ExperimentalSerializationApi
 import net.kyori.adventure.text.Component
 import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.arguments.ArgumentType
 import net.minestom.server.command.builder.suggestion.SuggestionEntry
 import net.minestom.server.item.ItemStack
 
+@ExperimentalSerializationApi
 class ItemsCommand(private val itemService: ItemService) : Command("items", "i") {
     init {
         val nameArgument = ArgumentType.String("item")
-        nameArgument.setSuggestionCallback { sender, context, suggestion ->
+        nameArgument.setSuggestionCallback { _, _, suggestion ->
             itemService.items.map {
                 SuggestionEntry(
                     it.key,
