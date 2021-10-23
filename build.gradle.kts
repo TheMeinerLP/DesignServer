@@ -26,7 +26,7 @@ dependencies {
 
 tasks.jar {
     manifest {
-        attributes["Main-Class"] = "dev.themeinerlp.designserver.Main"
+        attributes["Main-Class"] = "dev.themeinerlp.designserver.MainKt"
         attributes["Multi-Release"] = true
     }
 }
