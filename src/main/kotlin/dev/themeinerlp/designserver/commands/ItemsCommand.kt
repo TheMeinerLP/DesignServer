@@ -2,7 +2,6 @@ package dev.themeinerlp.designserver.commands
 
 import dev.themeinerlp.designserver.ItemService
 import kotlinx.serialization.ExperimentalSerializationApi
-import net.kyori.adventure.text.Component
 import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.arguments.ArgumentType
 import net.minestom.server.command.builder.suggestion.SuggestionEntry

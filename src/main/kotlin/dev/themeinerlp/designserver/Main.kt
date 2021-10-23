@@ -10,12 +10,8 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import net.minestom.server.MinecraftServer
 import net.minestom.server.event.item.ItemDropEvent
 import net.minestom.server.event.item.PickupItemEvent
-import net.minestom.server.event.player.PlayerBlockInteractEvent
-import net.minestom.server.event.player.PlayerHandAnimationEvent
 import net.minestom.server.event.player.PlayerLoginEvent
-import net.minestom.server.event.player.PlayerSkinInitEvent
 import net.minestom.server.event.server.ServerListPingEvent
-import java.util.function.Consumer
 
 @ObsoleteCoroutinesApi
 @ExperimentalSerializationApi

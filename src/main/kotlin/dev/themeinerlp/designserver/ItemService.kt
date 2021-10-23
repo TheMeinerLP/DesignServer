@@ -12,13 +12,10 @@ import kotlinx.serialization.json.decodeFromStream
 import net.kyori.adventure.text.Component
 import net.minestom.server.MinecraftServer
 import net.minestom.server.attribute.Attribute
-import net.minestom.server.inventory.Inventory
-import net.minestom.server.inventory.InventoryType
 import net.minestom.server.item.Enchantment
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
 import net.minestom.server.item.attribute.ItemAttribute
-import java.io.IOException
 import java.lang.Exception
 import java.nio.file.*
 import java.nio.file.StandardWatchEventKinds.*
@@ -26,7 +23,6 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.io.path.inputStream
-import kotlin.io.path.readBytes
 import kotlin.io.path.readText
 
 @ExperimentalSerializationApi
